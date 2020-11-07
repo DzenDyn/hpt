@@ -1,13 +1,13 @@
 {
-  "name": "htp-collector",
+  "name": "hpt",
   "version": "0.0.1",
-  "description": "HiPath tarification collector",
-  "repository": "https://github.com/DzenDyn/hpt-collector.git",
+  "description": "Siemens HiPath Tarification",
+  "main": "hpt.js",
+  "repository": "https://github.com/DzenDyn/hpt.git",
   "contributors": [
     "Evgeny Nikiforov <dzendyn@gmail.com> (https://github.com/DzenDyn/)",
     "Valery Grunenko <smb.sochi@gmail.com> (https://github.com/spectrejs/)"
   ],
-  "main": "collector.js",
   "type": "module",
   "license": "MIT",
   "devDependencies": {
