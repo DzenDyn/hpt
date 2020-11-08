@@ -24,18 +24,22 @@ const generateNumericString = (minLength, maxLength) => {
     return phone;
 };
 
+// PBX Subscriber
 const subscriber = () => {
     return generateNumericString(4, 10);
 };
 
+// External abonent
 const external = () => {
     return generateNumericString(7, 22);
 };
 
+// PBX trunk
 const trunk = () => {
     return generateNumericString(1, 3);
 };
 
+// Call direction
 const direction = () => {
     return getRandom(0, 1);
 };
