@@ -5,11 +5,22 @@
 *.pnp
 *pnp.js
 
+#logs
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+
+*.grunt
+
 # testing
 *coverage
-
+*lib-cov
 # production
 *build
+*build/Release
 
 # misc
 *.DS_Store
@@ -28,3 +39,9 @@
 
 *.idea
 *.vscode
+
+# Users Environment Variables
+*.lock-wscript
+
+# Runtime configuration for swagger app
+*config/runtime.yaml

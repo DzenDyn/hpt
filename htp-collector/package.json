@@ -22,6 +22,6 @@
     "simulate": "node pbx_simulator.js"
   },
   "dependencies": {
-    "date-and-time": "^0.14.1"
+    "date-and-time": "~0.14.1"
   }
 }
