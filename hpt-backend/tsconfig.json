@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "types": ["node"],
+    "target": "es5",
+    "module": "commonjs",
+    "lib": ["es2019"],
+    "allowJs": true,
+    "checkJs": true,
+    "jsx": "react",
+    "outDir": "./bin",
+    "rootDir": "./src",
+    "noEmit": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": false,
+    "strict": true,
+    "baseUrl": "./",
+    "noImplicitAny": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+  }
+}
