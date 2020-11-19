@@ -15,7 +15,7 @@
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
 		// Движку нужен проект TS для правил с типами
-		"project": "./backend/tsconfig.json"
+		"project": "./hpt-backend/tsconfig.json"
     },
     "plugins": [
         "prettier",
