@@ -40,6 +40,8 @@ export function getTariffication(req: express.Request, res: express.Response): v
         });
 }
 
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 export function createTariffication(req: express.Request, res: express.Response): void {
     const newRecord = new TarifficationRecord(req.body);
     newRecord._id = String(uuid.v4());
