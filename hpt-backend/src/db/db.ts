@@ -4,13 +4,13 @@ import Mongoose = require('mongoose');
 dotenv.config();
 let db: Mongoose.Connection;
 
-export const connect = (): void => {
+export const connect = async (): Promise<void> => {
     const uri = 'mongodb://localhost:27017/hpt?authSource=dbWithUserCredentials';
     if (db) {
         return;
     }
 
-    Mongoose.connect(uri, {
+    await Mongoose.connect(uri, {
         authSource: 'hpt',
         user: process.env.DB_USER,
         pass: process.env.DB_PASS,

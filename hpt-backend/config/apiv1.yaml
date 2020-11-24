@@ -17,17 +17,32 @@ tags:
 paths:
   /tariffication:
     get:
-      description: 'Returns tariffication objects'
+      description: 'Returns tariffication objects, total pages count and current page'
       tags:
         - Tariffication 
       operationId: getTariffication
       parameters:
+        - name: page
+          required: false 
+          in: query
+          description: 'Page number'
+          schema:
+            type: number
+            default: 1
+        - name: pageSize
+          required: false 
+          in: query
+          description: 'Page size limit'
+          schema:
+            type: number
+            maximum: 100
+            default: 10
         - name: subcriber
           required: false
           in: query
           description: 'Subscriber number, to return only his tariffication strings'
           schema:
-            type: string
+            type: number
         - name: dateStart
           required: false 
           in: query
@@ -45,7 +60,7 @@ paths:
           in: query
           description: 'External number, to return tariffication strings wich contains that number'
           schema:
-            type: string
+            type: number
       responses:
         '200':
           description: OK
@@ -142,24 +157,24 @@ components:
             description: An Unique identificator
           dateTime:
             type: string
-            description: 'Date and time. Format: YYYY-MM-DD HH:mm:ss. Example: 2020-11-22 12:00:00'
+            description: 'Date and time. Format: YYYY-MM-DD HH:mm:ss, wich auto converts to UTC. Example: 2020-11-22 12:00:00 will be 2020-11-22 09:00:00'
           duration:
-            type: string
-            description: 'Call duration'
+            type: number
+            description: 'Call duration in seconds'
           subscriber:
-            type: string
+            type: number
             description: 'Subscriber number'
           external:
-            type: string
+            type: number
             description: 'External number'
           trunk:
-            type: string
+            type: number
             description: 'Trunk number'
           direction:
-            type: string
+            type: number
             description: 'Call direction'
           exitCode:
-            type: string
+            type: number
             description: 'Call exit code'            
         required:
           - dateTime
@@ -169,19 +184,26 @@ components:
           - direction
           
       TarifficationResponse:
-        type: object
-        properties:
-          data:
-            type: array
-            items:
-              $ref: '#/components/schemas/Tariffication'
-                
+        $ref: '#/components/schemas/Tariffication'
         additionalProperties: false
 
   responses:
     'TarifficationResponse':
-      description: Returns data array of Tariffication objects
+      description: Returns resultCoude = 0, data array of Tariffication objects and total records count, or not resultCode!=0 with error message.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/TarifficationResponse'
+            type: object
+            properties:
+              resultCode:
+                type: integer
+              message:
+                    type: string
+              records:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/TarifficationResponse'
+              currentPage:
+                type: number
+              totalPagesCount:
+                type: number

@@ -1,10 +1,18 @@
 import * as mongoose from 'mongoose';
 
-const Schema = mongoose;
+const { Schema } = mongoose;
 
-export const TarifficationRecordSchema = new Schema({
-    id: {
-        type: String,
-        required: 'true'
-    }
-});
+/* eslint-disable  @typescript-eslint/no-unsafe-assignment */
+export const TarifficationRecordSchema = new Schema(
+    {
+        _id: String,
+        dateTime: Date,
+        duration: Number,
+        subscriber: Number,
+        external: Number,
+        trunk: Number,
+        direction: Number,
+        exitCode: Number
+    },
+    { versionKey: false }
+);

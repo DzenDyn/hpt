@@ -4,6 +4,7 @@ import swaggerUi from 'swagger-ui-express';
 import { Express } from 'express-serve-static-core';
 import { connector, summarise } from 'swagger-routes-express';
 import YAML from 'yamljs';
+import * as OpenApiValidator from 'express-openapi-validator';
 
 import * as api from '../api/controllers';
 
@@ -33,6 +34,26 @@ export async function createServer(): Promise<Express> {
         res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
         next();
     });
+
+    const validatorOptions = {
+        coerceTypes: false,
+        apiSpec: yamlSpecFile,
+        validateRequests: true,
+        validateResponses: false
+    };
+
+    server.use(OpenApiValidator.middleware(validatorOptions));
+    server.use(
+        (err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+            res.status(err.status).json({
+                error: {
+                    type: 'request_validation',
+                    message: err.message,
+                    errors: err.errors
+                }
+            });
+        }
+    );
 
     server.use(
         '/v1/api-docs',
