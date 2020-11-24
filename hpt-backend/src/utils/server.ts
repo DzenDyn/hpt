@@ -42,6 +42,12 @@ export async function createServer(): Promise<Express> {
         validateResponses: false
     };
 
+    server.use(
+        '/v1/api-docs',
+        swaggerUi.serve,
+        swaggerUi.setup(apiDefinition, { explorer: false })
+    );
+
     server.use(OpenApiValidator.middleware(validatorOptions));
     server.use(
         (err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
@@ -53,12 +59,6 @@ export async function createServer(): Promise<Express> {
                 }
             });
         }
-    );
-
-    server.use(
-        '/v1/api-docs',
-        swaggerUi.serve,
-        swaggerUi.setup(apiDefinition, { explorer: false })
     );
 
     // error customization, if request is invalid
