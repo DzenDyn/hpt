@@ -7,9 +7,14 @@
     "Evgeny Nikiforov <dzendyn@gmail.com> (https://github.com/DzenDyn/)",
     "Valery Grunenko <smb.sochi@gmail.com> (https://github.com/spectrejs/)"
   ],
-  "main": "collector.js",
+  "main": "./collector.js",
   "type": "module",
   "license": "MIT",
+  "dependencies": {
+    "axios": "~0.21.0",
+    "date-and-time": "~0.14.1",
+    "dotenv": "~8.2.0"
+  },
   "devDependencies": {
     "eslint": "~7.12.1",
     "eslint-config-airbnb-base": "~14.2.0",
@@ -19,9 +24,7 @@
     "prettier": "~2.1.2"
   },
   "scripts": {
-    "simulate": "node pbx_simulator.js"
-  },
-  "dependencies": {
-    "date-and-time": "~0.14.1"
+    "simulate": "node pbx_simulator.js",
+    "start": "node collector.js"
   }
 }
