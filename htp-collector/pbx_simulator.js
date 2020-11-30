@@ -1,6 +1,8 @@
 import { createServer } from 'net';
 import dt from 'date-and-time';
 
+const TIMEZONE = 3;
+
 // configure there
 const PORT = 1337;
 const HOST = 'localhost';
@@ -61,7 +63,9 @@ const server = createServer((socket) => {
     while (true) {
         const now = new Date();
         const date = dt.format(now, 'YYYY-MM-DD HH:mm:ss');
-        const newDate = new Date.UTC(now.getTime() + getRandom(1, 1800) * 1000);
+        const newDate = new Date(
+            now.getTime() + getRandom(1, 1800) * 1000 - TIMEZONE * 3600 * 1000
+        );
         const duration = dt.format(new Date(newDate - now), 'HH:mm:ss');
         socket.write(
             `${date} ${duration} ${subscriber()} ${external()} ${trunk()} ${direction()} ${exitCode()}\r\n`
