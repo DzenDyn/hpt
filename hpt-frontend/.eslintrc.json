@@ -11,12 +11,17 @@
         "plugin:react/recommended",
         "plugin:@typescript-eslint/eslint-recommended",
         "plugin:@typescript-eslint/recommended",
-        "plugin:@typescript-eslint/recommended-requiring-type-checking"
+        "plugin:@typescript-eslint/recommended-requiring-type-checking",
+        "airbnb-typescript",
+        "prettier/react",
+        "prettier/@typescript-eslint",
+        "plugin:prettier/recommended"
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
 		// Движку нужен проект TS для правил с типами
-		"project": "./hpt-frontend/tsconfig.json"
+        "project": "./tsconfig.json",
+        "tsconfigRootDir": "./"
     },
     "plugins": [
         "prettier",
@@ -24,6 +29,9 @@
         "@typescript-eslint"
     ],
     "settings": {
+        "import/resolver": {
+            "typescript": {}
+        },
         "react": {
             "version": "detect"
         }
