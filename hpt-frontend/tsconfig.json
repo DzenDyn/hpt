@@ -21,10 +21,15 @@
     "jsx": "react-jsx",
     "noImplicitReturns": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": false
+    "noUnusedParameters": false,
+    "outDir": "./bin",
+    "rootDir": "./src"
   },
   "include": [
     "src"
   ],
-  "exclude": ["node_modules", ".vscode"]
+  "exclude": [
+    "node_modules",
+    ".vscode"
+  ]
 }
