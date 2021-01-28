@@ -1,10 +1,22 @@
 import { tarifficationAPI } from '../api/api';
-import { SET_TARIFFICATION, SET_CURRENT_PAGE, SET_PAGE_SIZE, TOGGLE_IS_FETCHING } from './types';
+import {
+    SET_TARIFFICATION,
+    SET_CURRENT_PAGE,
+    SET_PAGE_SIZE,
+    TOGGLE_IS_FETCHING,
+    SET_TOTAL_PAGES,
+    SET_PAGINATION,
+    SET_TOTAL
+} from './types';
 
 const initialState = {
     tariffication: [],
-    currentPage: 1,
-    pageSize: 30,
+    pagination: {
+        current: 1,
+        pageSize: 10,
+        total: 0,
+        totalPages: 0
+    },
     isFetching: false
 };
 
@@ -13,13 +25,37 @@ const handlers = {
         ...state,
         tariffication: payload
     }),
+    [SET_PAGINATION]: (state, { payload }) => ({
+        ...state,
+        pagination: payload
+    }),
     [SET_CURRENT_PAGE]: (state, { payload }) => ({
         ...state,
-        currentPage: payload
+        pagination: {
+            ...state.pagination,
+            current: payload
+        }
     }),
     [SET_PAGE_SIZE]: (state, { payload }) => ({
         ...state,
-        pageSize: payload
+        pagination: {
+            ...state.pagination,
+            pageSize: payload
+        }
+    }),
+    [SET_TOTAL_PAGES]: (state, { payload }) => ({
+        ...state,
+        pagination: {
+            ...state.pagination,
+            totalPages: payload
+        }
+    }),
+    [SET_TOTAL]: (state, { payload }) => ({
+        ...state,
+        pagination: {
+            ...state.pagination,
+            total: payload
+        }
     }),
     [TOGGLE_IS_FETCHING]: (state, { payload }) => ({
         ...state,
@@ -43,6 +79,20 @@ export const setPageSize = (payload) => ({
     payload
 });
 
+export const setTotalPages = (payload) => ({
+    type: SET_TOTAL_PAGES,
+    payload
+});
+export const setTotal = (payload) => ({
+    type: SET_TOTAL,
+    payload
+});
+
+export const setPagination = (payload) => ({
+    type: SET_PAGINATION,
+    payload
+});
+
 export const toggleIsFetching = (payload) => ({
     type: TOGGLE_IS_FETCHING,
     payload
@@ -51,11 +101,11 @@ export const toggleIsFetching = (payload) => ({
 export const requestTariffication = (currentPage, pageSize) => async (dispatch) => {
     dispatch(toggleIsFetching(true));
     const response = await tarifficationAPI.getTariffication(currentPage, pageSize);
-
-    if (response.data.data) {
-        dispatch(setCurrentPage(response.data.data.currentPage));
-        dispatch(setPageSize(response.data.data.pageSize));
-        dispatch(setTariffication(response.data.data.records));
+    if (response) {
+        dispatch(setTariffication(response.data.records));
+        dispatch(setTotal(response.data.total));
+        dispatch(setTotalPages(response.data.totalPages));
+        dispatch(toggleIsFetching(false));
     }
 };
 

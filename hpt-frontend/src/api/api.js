@@ -3,7 +3,7 @@ import axios from 'axios';
 const baseURL = 'http://localhost/v1/';
 const instance = axios.create({
     baseURL,
-    timeout: 1000
+    timeout: 3000
 });
 
 export const tarifficationAPI = {
@@ -13,7 +13,7 @@ export const tarifficationAPI = {
         if (dateStart) queryString += `&dateStart=${dateStart}`;
         if (dateEnd) queryString += `&dateEnd=${dateEnd}`;
         if (external) queryString += `&external=${external}`;
-        const response = await instance.get(queryString);
+        const response = await instance.get(queryString).catch((err) => console.log(err));
         return response;
     }
 };
