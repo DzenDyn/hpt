@@ -182,7 +182,6 @@ components:
           - subscriber
           - external
           - direction
-          
       TarifficationResponse:
         $ref: '#/components/schemas/Tariffication'
         additionalProperties: false
@@ -205,5 +204,7 @@ components:
                     $ref: '#/components/schemas/TarifficationResponse'
               currentPage:
                 type: number
-              totalPagesCount:
+              total:
+                type: number
+              totalPages:
                 type: number

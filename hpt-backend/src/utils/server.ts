@@ -5,7 +5,6 @@ import { Express } from 'express-serve-static-core';
 import { connector, summarise } from 'swagger-routes-express';
 import YAML from 'yamljs';
 import * as OpenApiValidator from 'express-openapi-validator';
-
 import * as api from '../api/controllers';
 
 /* eslint-disable  @typescript-eslint/no-unsafe-assignment */
@@ -25,22 +24,25 @@ export async function createServer(): Promise<Express> {
     // here we can intialize body/cookies parsers, connect logger, for example morgan
     server.use(bodyParser.json());
 
-    // CORS settings
-    server.use((req, res, next) => {
-        // There we can chosee to which domains its allowed, or to all(*)
-        res.setHeader('Acess-Controll-Allow-Origin', '*');
-        // Specify allowed methods
-        res.setHeader('Acess-Control-Aloow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
-        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-        next();
-    });
-
     const validatorOptions = {
         coerceTypes: false,
         apiSpec: yamlSpecFile,
         validateRequests: true,
         validateResponses: false
     };
+
+    // CORS settings
+    server.use((req, res, next) => {
+        // There we can chosee to which domains its allowed, or to all(*)
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        // Specify allowed methods
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
+        res.setHeader(
+            'Access-Control-Allow-Headers',
+            'Origin, Content-Type, X-Requested-With, Authorization, Accept'
+        );
+        next();
+    });
 
     server.use(
         '/v1/api-docs',

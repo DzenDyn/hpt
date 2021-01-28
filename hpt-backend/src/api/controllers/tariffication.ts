@@ -1,7 +1,6 @@
 import * as express from 'express';
-import * as uuid from 'uuid';
-
 import * as mongoose from 'mongoose';
+import * as uuid from 'uuid';
 import { TarifficationRecordSchema } from '../../db/models/tarifficationRecord';
 
 const TarifficationRecord = mongoose.model('TarifficationRecord', TarifficationRecordSchema);
@@ -28,6 +27,7 @@ export function getTariffication(req: express.Request, res: express.Response): v
             res.json({
                 resultCode: 0,
                 records,
+                total: count,
                 totalPages: Math.ceil(count / limit),
                 currentPage: pageNumber
             });

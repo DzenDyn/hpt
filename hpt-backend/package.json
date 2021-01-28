@@ -48,7 +48,7 @@
     "clean": "rimraf bin",
     "tsc": "tsc",
     "build": "npm-run-all clean tsc",
-    "start": "node ./bin/app.js",
+    "start": "node ./bin/server.js",
     "dev": "nodemon"
   }
 }
