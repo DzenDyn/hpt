@@ -5,7 +5,6 @@ import { Express } from 'express-serve-static-core';
 import { connector, summarise } from 'swagger-routes-express';
 import YAML from 'yamljs';
 import * as OpenApiValidator from 'express-openapi-validator';
-
 import * as api from '../api/controllers';
 
 /* eslint-disable  @typescript-eslint/no-unsafe-assignment */
