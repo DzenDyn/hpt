@@ -28,6 +28,7 @@ export function getTariffication(req: express.Request, res: express.Response): v
             res.json({
                 resultCode: 0,
                 records,
+                total: count,
                 totalPages: Math.ceil(count / limit),
                 currentPage: pageNumber
             });

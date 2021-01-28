@@ -205,5 +205,7 @@ components:
                     $ref: '#/components/schemas/TarifficationResponse'
               currentPage:
                 type: number
-              totalPagesCount:
+              total:
+                type: number
+              totalPages:
                 type: number
