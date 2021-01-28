@@ -2,36 +2,21 @@
     "env": {
         "browser": true,
         "es6": true,
-        "es2017": true
+        "es2021": true
     },
     "extends": [
         "airbnb-base",
         "prettier",
         "eslint:recommended",
         "plugin:react/recommended",
-        "plugin:@typescript-eslint/eslint-recommended",
-        "plugin:@typescript-eslint/recommended",
-        "plugin:@typescript-eslint/recommended-requiring-type-checking",
-        "airbnb-typescript",
         "prettier/react",
-        "prettier/@typescript-eslint",
         "plugin:prettier/recommended"
     ],
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-		// Движку нужен проект TS для правил с типами
-        "project": "./tsconfig.json",
-        "tsconfigRootDir": "./"
-    },
     "plugins": [
         "prettier",
-        "react",
-        "@typescript-eslint"
+        "react"
     ],
     "settings": {
-        "import/resolver": {
-            "typescript": {}
-        },
         "react": {
             "version": "detect"
         }
@@ -48,7 +33,6 @@
         "no-case-declarations": 0,
         "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
         "space-infix-ops": ["error", { "int32Hint": false }],
-        "no-use-before-define": "off",
-        "@typescript-eslint/no-use-before-define": ["error"]
+        "no-use-before-define": "off"
     }
 }
