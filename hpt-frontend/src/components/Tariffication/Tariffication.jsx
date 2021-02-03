@@ -2,9 +2,7 @@ import React, { useEffect } from 'react';
 import { Table } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-    getCurrentPage,
     getIsFetching,
-    getPageSize,
     getPagionation,
     getTariffication
 } from '../../redux/tarifficationSelectors';
@@ -13,8 +11,6 @@ import { requestTariffication, setPagination } from '../../redux/tarifficationRe
 export const Tariffication = () => {
     const dispatch = useDispatch();
 
-    const currentPage = useSelector(getCurrentPage);
-    const pageSize = useSelector(getPageSize);
     const isFetching = useSelector(getIsFetching);
     const tariffication = useSelector(getTariffication);
     const pagination = useSelector(getPagionation);
@@ -26,7 +22,7 @@ export const Tariffication = () => {
     };
 
     useEffect(() => {
-        dispatch(requestTariffication(currentPage, pageSize));
+        dispatch(requestTariffication(pagination, undefined, undefined));
     }, []);
 
     const columns = [
@@ -35,7 +31,6 @@ export const Tariffication = () => {
             dataIndex: 'dateTime',
             key: 'dateTime',
             defaultSortOrder: 'ascend',
-            sorter: (a, b) => Date.parse(a.dateTime) - Date.parse(b.dateTime),
             render: (dateTime) =>
                 new Date(dateTime).toLocaleDateString(undefined, {
                     year: 'numeric',
@@ -45,40 +40,38 @@ export const Tariffication = () => {
                     hour: '2-digit',
                     minute: '2-digit',
                     second: '2-digit'
-                })
+                }),
+            sorter: true
         },
         {
             title: 'Subscriber',
             dataIndex: 'subscriber',
             key: 'subscriber',
-            sorter: (a, b) => a.subscriber - b.subscriber,
-            onFilter: (val, record) => record.address.indexOf(val) === 0
+            sorter: true
         },
         {
             title: 'Duration',
             dataIndex: 'duration',
             key: 'duration',
-            sorter: (a, b) => a.duration - b.duration
+            sorter: true
         },
         {
             title: 'External',
             dataIndex: 'external',
             key: 'external',
-            sorter: (a, b) => a.external - b.external
+            sorter: true
         },
         {
             title: 'Direction',
             dataIndex: 'direction',
             key: 'direction',
-            sorter: (a, b) => a.direction - b.direction
+            sorter: true
         }
     ];
 
-    const handleTableChange = (pagi) => {
-        console.log('dispatch setPagi');
-        console.log(pagi);
+    const handleTableChange = (pagi, filter, sorter) => {
         dispatch(setPagination(pagi));
-        dispatch(requestTariffication(pagi.current, pagi.pageSize));
+        dispatch(requestTariffication(pagi, filter, sorter));
     };
 
     return (

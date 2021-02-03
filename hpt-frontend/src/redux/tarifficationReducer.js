@@ -98,13 +98,19 @@ export const toggleIsFetching = (payload) => ({
     payload
 });
 
-export const requestTariffication = (currentPage, pageSize) => async (dispatch) => {
+export const requestTariffication = (pagination, filter, sorter) => async (dispatch) => {
+    const { current, pageSize } = pagination;
+    const { field, order } = sorter || {};
+
+    // console.log(current, pageSize, field, order);
+
     dispatch(toggleIsFetching(true));
-    const response = await tarifficationAPI.getTariffication(currentPage, pageSize);
+    const response = await tarifficationAPI.getTariffication(current, pageSize, field, order);
+
     if (response) {
         dispatch(setTariffication(response.data.records));
-        dispatch(setTotal(response.data.total));
-        dispatch(setTotalPages(response.data.totalPages));
+        dispatch(setPagination(response.data.pagination));
+        // dispatch(setTotalPages(response.data.totalPages));
         dispatch(toggleIsFetching(false));
     }
 };

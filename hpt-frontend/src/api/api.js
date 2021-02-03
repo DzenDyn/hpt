@@ -7,12 +7,10 @@ const instance = axios.create({
 });
 
 export const tarifficationAPI = {
-    async getTariffication(page = 1, pageSize = 10, subscriber, dateStart, dateEnd, external) {
-        let queryString = `tariffication/?page=${page}&pageSize=${pageSize}`;
-        if (subscriber) queryString += `&subscriber=${subscriber}`;
-        if (dateStart) queryString += `&dateStart=${dateStart}`;
-        if (dateEnd) queryString += `&dateEnd=${dateEnd}`;
-        if (external) queryString += `&external=${external}`;
+    async getTariffication(current = 1, pageSize = 10, column, order) {
+        let queryString = `tariffication/?current=${current}&pageSize=${pageSize}`;
+        if (column) queryString += `&column=${column}`;
+        if (order) queryString += `&order=${order}`;
         const response = await instance.get(queryString).catch((err) => console.log(err));
         return response;
     }

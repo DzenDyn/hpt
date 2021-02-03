@@ -17,50 +17,43 @@ tags:
 paths:
   /tariffication:
     get:
-      description: 'Returns tariffication objects, total pages count and current page'
+      description: 'Returns tariffication objects, total records count, total pages count and current page'
       tags:
         - Tariffication 
       operationId: getTariffication
       parameters:
-        - name: page
+        - name: current
           required: false 
           in: query
-          description: 'Page number'
+          description: 'Current page'
           schema:
             type: number
-            default: 1
+          example: 1
         - name: pageSize
           required: false 
           in: query
-          description: 'Page size limit'
+          description: 'Page size'
           schema:
             type: number
-            maximum: 100
-            default: 10
-        - name: subcriber
-          required: false
-          in: query
-          description: 'Subscriber number, to return only his tariffication strings'
-          schema:
-            type: number
-        - name: dateStart
+          example: 10
+        - name: column
           required: false 
           in: query
-          description: 'Date and time from wich to display tariffication strings. Format: YYYY-MM-DD HH:mm:ss. Example: 2020-11-22 12:00:00'
+          description: 'Sort by column'
           schema:
             type: string
-        - name: dateEnd
+          example: Name
+        - name: order
           required: false 
           in: query
-          description: 'Date and time until wich to display tariffication strings. Format: YYYY-MM-DD HH:mm:ss. Example: 2020-11-22 12:00:00'
+          description: 'Order'
+          examples:
+            Ascending:
+              value: ascend
+            Descending:
+              value: descend
           schema:
             type: string
-        - name: external
-          required: false 
-          in: query
-          description: 'External number, to return tariffication strings wich contains that number'
-          schema:
-            type: number
       responses:
         '200':
           description: OK
@@ -202,9 +195,12 @@ components:
                   type: array
                   items:
                     $ref: '#/components/schemas/TarifficationResponse'
-              currentPage:
-                type: number
-              total:
-                type: number
-              totalPages:
-                type: number
+              pagination:
+                  type: object
+                  properties:
+                    currentPage:
+                      type: number
+                    total:
+                      type: number
+                    totalPages:
+                      type: number

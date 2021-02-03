@@ -11,13 +11,13 @@ import App from './App';
 
 ReactDOM.render(
     <React.StrictMode>
-        <Provider store={store}>
-            <BrowserRouter>
-                <ConfigProvider locale={ruRu}>
+        <ConfigProvider locale={ruRu}>
+            <Provider store={store}>
+                <BrowserRouter>
                     <App />
-                </ConfigProvider>
-            </BrowserRouter>
-        </Provider>
+                </BrowserRouter>
+            </Provider>
+        </ConfigProvider>
     </React.StrictMode>,
     document.getElementById('root')
 );

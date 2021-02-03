@@ -6,11 +6,12 @@ import { TarifficationRecordSchema } from '../../db/models/tarifficationRecord';
 const TarifficationRecord = mongoose.model('TarifficationRecord', TarifficationRecordSchema);
 
 export function getTariffication(req: express.Request, res: express.Response): void {
-    const { subscriber, dateStart, dateEnd, external, page = 1, pageSize = 1 } = req.query;
-    const pageNumber: number = +page;
-    const limit: number = +pageSize;
+    /*
+    TODO:
+    realize filters
 
-    TarifficationRecord.find({
+    old method:
+    {
         ...(subscriber && { subscriber }),
         ...((dateStart || dateEnd) && {
             dateTime: {
@@ -19,7 +20,17 @@ export function getTariffication(req: express.Request, res: express.Response): v
             }
         }),
         ...(external && { external })
-    })
+    }
+    */
+    const { column, order, current = 1, pageSize = 1 } = req.query;
+    const pageNumber = +current;
+    const limit: number = +pageSize;
+
+    TarifficationRecord.find({})
+        .sort({
+            ...(order === 'ascend' && { [String(column)]: 1 }),
+            ...(order === 'descend' && { [String(column)]: -1 })
+        })
         .limit(limit * 1)
         .skip((pageNumber - 1) * limit)
         .then(async (records) => {
@@ -27,9 +38,11 @@ export function getTariffication(req: express.Request, res: express.Response): v
             res.json({
                 resultCode: 0,
                 records,
-                total: count,
-                totalPages: Math.ceil(count / limit),
-                currentPage: pageNumber
+                pagination: {
+                    currentPage: pageNumber,
+                    total: count,
+                    totalPages: Math.ceil(count / limit)
+                }
             });
         })
         .catch((err: Error) => {
