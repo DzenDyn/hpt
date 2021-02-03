@@ -10,36 +10,6 @@ import {
 } from '../../redux/tarifficationSelectors';
 import { requestTariffication, setPagination } from '../../redux/tarifficationReducer';
 
-const columns = [
-    {
-        title: 'Date and Time',
-        dataIndex: 'dateTime',
-        key: 'dateTime',
-        defaultSortOrder: 'descend'
-    },
-    {
-        title: 'Subscriber',
-        dataIndex: 'subscriber',
-        key: 'subscriber'
-    },
-    {
-        title: 'Duration',
-        dataIndex: 'duration',
-        key: 'duration'
-    },
-    {
-        title: 'External',
-        dataIndex: 'external',
-        key: 'external'
-    },
-    {
-        title: 'Direction',
-        dataIndex: 'direction',
-        key: 'direction'
-    }
-];
-const PAGE_SIZE_OPTIONS = [5, 10, 20, 30, 50, 100];
-
 export const Tariffication = () => {
     const dispatch = useDispatch();
 
@@ -51,13 +21,58 @@ export const Tariffication = () => {
 
     const pagiOptions = {
         ...pagination,
-        showSizeChanger: true,
-        pageSizeOptions: PAGE_SIZE_OPTIONS
+        showSizeChanger: false,
+        pageSizeOptions: [5, 10, 20, 30, 50, 100]
     };
 
     useEffect(() => {
         dispatch(requestTariffication(currentPage, pageSize));
     }, []);
+
+    const columns = [
+        {
+            title: 'Date and Time',
+            dataIndex: 'dateTime',
+            key: 'dateTime',
+            defaultSortOrder: 'ascend',
+            sorter: (a, b) => Date.parse(a.dateTime) - Date.parse(b.dateTime),
+            render: (dateTime) =>
+                new Date(dateTime).toLocaleDateString(undefined, {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour12: false,
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                })
+        },
+        {
+            title: 'Subscriber',
+            dataIndex: 'subscriber',
+            key: 'subscriber',
+            sorter: (a, b) => a.subscriber - b.subscriber,
+            onFilter: (val, record) => record.address.indexOf(val) === 0
+        },
+        {
+            title: 'Duration',
+            dataIndex: 'duration',
+            key: 'duration',
+            sorter: (a, b) => a.duration - b.duration
+        },
+        {
+            title: 'External',
+            dataIndex: 'external',
+            key: 'external',
+            sorter: (a, b) => a.external - b.external
+        },
+        {
+            title: 'Direction',
+            dataIndex: 'direction',
+            key: 'direction',
+            sorter: (a, b) => a.direction - b.direction
+        }
+    ];
 
     const handleTableChange = (pagi) => {
         console.log('dispatch setPagi');
