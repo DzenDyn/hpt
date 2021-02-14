@@ -10,3 +10,4 @@ export const SET_TOTAL_PAGES = 'SET_TOTAL_PAGES';
 export const SET_PAGINATION = 'SET_PAGINATION';
 export const SET_TOTAL = 'SET_TOTAL';
 export const TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING';
+export const SET_FILTER = 'SET_FILTER';
