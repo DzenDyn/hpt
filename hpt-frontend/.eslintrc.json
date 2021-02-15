@@ -1,18 +1,26 @@
 {
     "env": {
         "browser": true,
-        "es6": true
+        "es6": true,
+        "es2021": true
     },
     "extends": [
         "airbnb-base",
         "prettier",
         "eslint:recommended",
-        "plugin:react/recommended"
+        "plugin:react/recommended",
+        "prettier/react",
+        "plugin:prettier/recommended"
     ],
     "plugins": [
         "prettier",
         "react"
     ],
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
+    },
     "rules": {
         "no-console": 0,
         "prettier/prettier": ["error"],
@@ -24,6 +32,7 @@
         "no-param-reassign": ["error", { "props": false }],
         "no-case-declarations": 0,
         "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
-        "space-infix-ops": ["error", { "int32Hint": false }]
+        "space-infix-ops": ["error", { "int32Hint": false }],
+        "no-use-before-define": "off"
     }
 }
