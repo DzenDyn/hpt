@@ -54,6 +54,37 @@ paths:
               value: descend
           schema:
             type: string
+        - name: dateStart
+          required: false
+          in: query
+          description: 'Filter items starting from date'
+          schema:
+            type: string
+        - name: dateEnd
+          required: false
+          in: query
+          description: 'Filter items up to date'
+          schema:
+            type: string
+        - name: subscriber
+          required: false
+          in: query
+          description: 'Filter items by subscriber'
+          schema:
+            type: number
+        - name: external
+          required: false
+          in: query
+          description: 'Filter items by external subscriber'
+          schema:
+            type: string
+        - name: direction
+          required: false
+          in: query
+          description: 'Filter by call direction. 0 - incoming, 1 - outgoing '
+          schema:
+            type: number
+            example: 0
       responses:
         '200':
           description: OK

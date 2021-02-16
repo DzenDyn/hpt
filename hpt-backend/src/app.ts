@@ -6,7 +6,9 @@ db.connect()
         createServer()
             .then((server) => {
                 server.listen(80, () => {
-                    console.info('Listening on http://localhost');
+                    console.info(
+                        'Listening on http://localhost\nOpen http://localhost/v1/api-docs for documentation'
+                    );
                 });
             })
             .catch((err: Error) => {

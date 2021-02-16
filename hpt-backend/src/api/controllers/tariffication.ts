@@ -22,11 +22,31 @@ export function getTariffication(req: express.Request, res: express.Response): v
         ...(external && { external })
     }
     */
-    const { column, order, current = 1, pageSize = 1 } = req.query;
+    const {
+        column,
+        order,
+        current = 1,
+        pageSize = 1,
+        dateStart,
+        dateEnd,
+        subscriber,
+        external,
+        direction
+    } = req.query;
     const pageNumber = +current;
     const limit: number = +pageSize;
 
-    TarifficationRecord.find({})
+    TarifficationRecord.find({
+        ...(subscriber && { subscriber }),
+        ...((dateStart || dateEnd) && {
+            dateTime: {
+                ...(dateStart && { $gte: dateStart }),
+                ...(dateEnd && { $lt: dateEnd })
+            }
+        }),
+        ...(external && { external }),
+        ...(direction && { direction })
+    })
         .sort({
             ...(order === 'ascend' && { [String(column)]: 1 }),
             ...(order === 'descend' && { [String(column)]: -1 })

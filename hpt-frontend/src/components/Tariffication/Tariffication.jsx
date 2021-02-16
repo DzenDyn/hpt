@@ -4,9 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
     getIsFetching,
     getPagionation,
+    getSorter,
     getTariffication
 } from '../../redux/tarifficationSelectors';
-import { requestTariffication, setPagination } from '../../redux/tarifficationReducer';
+import { requestTariffication, setPagination, setSorter } from '../../redux/tarifficationReducer';
+import { Filter } from './Filter';
 
 export const Tariffication = () => {
     const dispatch = useDispatch();
@@ -14,6 +16,7 @@ export const Tariffication = () => {
     const isFetching = useSelector(getIsFetching);
     const tariffication = useSelector(getTariffication);
     const pagination = useSelector(getPagionation);
+    const sorter = useSelector(getSorter);
 
     const pagiOptions = {
         ...pagination,
@@ -69,13 +72,15 @@ export const Tariffication = () => {
         }
     ];
 
-    const handleTableChange = (pagi, filter, sorter) => {
+    const handleTableChange = (pagi, filter, sort) => {
+        dispatch(setSorter(sort));
         dispatch(setPagination(pagi));
-        dispatch(requestTariffication(pagi, filter, sorter));
+        dispatch(requestTariffication(pagi, filter, sort));
     };
 
     return (
         <>
+            <Filter handleTableChange={handleTableChange} pagination={pagination} sorter={sorter} />
             <Table
                 dataSource={tariffication}
                 rowKey={(record) => record._id}

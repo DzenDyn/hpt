@@ -7,7 +7,8 @@ import {
     SET_TOTAL_PAGES,
     SET_PAGINATION,
     SET_TOTAL,
-    SET_FILTER
+    SET_FILTER,
+    SET_SORTER
 } from './types';
 
 const initialState = {
@@ -19,6 +20,7 @@ const initialState = {
         totalPages: 0
     },
     filter: {},
+    sorter: {},
     isFetching: false
 };
 
@@ -67,6 +69,10 @@ const handlers = {
         ...state,
         filter: payload
     }),
+    [SET_SORTER]: (state, { payload }) => ({
+        ...state,
+        sorter: payload
+    }),
     DEFAULT: (state) => state
 };
 
@@ -104,6 +110,11 @@ export const toggleIsFetching = (payload) => ({
     payload
 });
 
+export const setSorter = (payload) => ({
+    type: SET_SORTER,
+    payload
+});
+
 export const setFilter = (payload) => ({
     type: SET_FILTER,
     payload
@@ -112,9 +123,23 @@ export const setFilter = (payload) => ({
 export const requestTariffication = (pagination, filter, sorter) => async (dispatch) => {
     const { current, pageSize } = pagination;
     const { field, order } = sorter || {};
+    const { dateStart, dateEnd, subscriber, external, direction } = filter || {};
+
+    console.log(filter);
+    console.log(dateStart, dateEnd, subscriber, external, direction);
 
     dispatch(toggleIsFetching(true));
-    const response = await tarifficationAPI.getTariffication(current, pageSize, field, order);
+    const response = await tarifficationAPI.getTariffication(
+        current,
+        pageSize,
+        field,
+        order,
+        dateStart,
+        dateEnd,
+        subscriber,
+        external,
+        direction
+    );
 
     if (response) {
         dispatch(setTariffication(response.data.records));
