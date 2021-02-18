@@ -123,10 +123,18 @@ export const setFilter = (payload) => ({
 export const requestTariffication = (pagination, filter, sorter) => async (dispatch) => {
     const { current, pageSize } = pagination;
     const { field, order } = sorter || {};
-    const { dateStart, dateEnd, subscriber, external, direction } = filter || {};
+    const {
+        dateStart,
+        dateEnd,
+        subscriber,
+        external,
+        direction,
+        searchExactSubscriber,
+        searchExactExternal
+    } = filter || {};
 
-    console.log(filter);
-    console.log(dateStart, dateEnd, subscriber, external, direction);
+    // console.log(filter);
+    // console.log(`SES = ${searchExactSubscriber}`);
 
     dispatch(toggleIsFetching(true));
     const response = await tarifficationAPI.getTariffication(
@@ -138,7 +146,9 @@ export const requestTariffication = (pagination, filter, sorter) => async (dispa
         dateEnd,
         subscriber,
         external,
-        direction
+        direction,
+        searchExactSubscriber,
+        searchExactExternal
     );
 
     if (response) {

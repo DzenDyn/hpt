@@ -72,12 +72,26 @@ paths:
           description: 'Filter items by subscriber'
           schema:
             type: number
+        - name: searchExactSubscriber
+          required: false
+          in: query
+          description: 'Search exact value of subscriber'
+          schema:
+            type: boolean
+          example: false
         - name: external
           required: false
           in: query
           description: 'Filter items by external subscriber'
           schema:
             type: string
+        - name: searchExactExternal
+          required: false
+          in: query
+          description: 'Search exact value of external subscriber'
+          schema:
+            type: boolean
+          example: false
         - name: direction
           required: false
           in: query
@@ -183,22 +197,22 @@ components:
             type: string
             description: 'Date and time. Format: YYYY-MM-DD HH:mm:ss, wich auto converts to UTC. Example: 2020-11-22 12:00:00 will be 2020-11-22 09:00:00'
           duration:
-            type: number
+            type: string
             description: 'Call duration in seconds'
           subscriber:
-            type: number
+            type: string
             description: 'Subscriber number'
           external:
-            type: number
+            type: string
             description: 'External number'
           trunk:
-            type: number
+            type: string
             description: 'Trunk number'
           direction:
-            type: number
+            type: string
             description: 'Call direction'
           exitCode:
-            type: number
+            type: string
             description: 'Call exit code'            
         required:
           - dateTime

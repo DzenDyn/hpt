@@ -6,9 +6,7 @@ import { TarifficationRecordSchema } from '../../db/models/tarifficationRecord';
 const TarifficationRecord = mongoose.model('TarifficationRecord', TarifficationRecordSchema);
 
 export function getTariffication(req: express.Request, res: express.Response): void {
-    /*
-    TODO:
-    realize filters
+    /* TODO: realize filters
 
     old method:
     {
@@ -22,6 +20,9 @@ export function getTariffication(req: express.Request, res: express.Response): v
         ...(external && { external })
     }
     */
+    // console.log('Query:');
+    // console.log(req.query);
+
     const {
         column,
         order,
@@ -31,22 +32,32 @@ export function getTariffication(req: express.Request, res: express.Response): v
         dateEnd,
         subscriber,
         external,
-        direction
+        direction,
+        searchExactSubscriber,
+        searchExactExternal
     } = req.query;
     const pageNumber = +current;
     const limit: number = +pageSize;
 
-    TarifficationRecord.find({
-        ...(subscriber && { subscriber }),
+    // ...(subscriber && { subscriber: { $regex: subscriber, $options: 'i' } }),
+
+    const filter = {
+        ...(subscriber && {
+            subscriber: searchExactSubscriber ? subscriber : { $regex: subscriber, $options: 'i' }
+        }),
         ...((dateStart || dateEnd) && {
             dateTime: {
                 ...(dateStart && { $gte: dateStart }),
                 ...(dateEnd && { $lt: dateEnd })
             }
         }),
-        ...(external && { external }),
+        ...(external && {
+            external: searchExactExternal ? external : { $regex: external, $options: 'i' }
+        }),
         ...(direction && { direction })
-    })
+    };
+
+    TarifficationRecord.find(filter)
         .sort({
             ...(order === 'ascend' && { [String(column)]: 1 }),
             ...(order === 'descend' && { [String(column)]: -1 })
@@ -54,7 +65,7 @@ export function getTariffication(req: express.Request, res: express.Response): v
         .limit(limit * 1)
         .skip((pageNumber - 1) * limit)
         .then(async (records) => {
-            const count = await TarifficationRecord.countDocuments();
+            const count = await TarifficationRecord.countDocuments(filter);
             res.json({
                 resultCode: 0,
                 records,

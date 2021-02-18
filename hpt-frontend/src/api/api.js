@@ -16,7 +16,9 @@ export const tarifficationAPI = {
         dateEnd,
         subscriber,
         external,
-        direction
+        direction,
+        searchExactSubscriber,
+        searchExactExternal
     ) {
         let queryString = `tariffication/?current=${current}&pageSize=${pageSize}`;
         if (column) queryString += `&column=${column}`;
@@ -26,6 +28,9 @@ export const tarifficationAPI = {
         if (subscriber) queryString += `&subscriber=${subscriber}`;
         if (external) queryString += `&external=${external}`;
         if (direction) queryString += `&direction=${direction}`;
+        if (searchExactSubscriber) queryString += `&searchExactSubscriber=${searchExactSubscriber}`;
+        if (searchExactExternal) queryString += `&searchExactExternal=${searchExactExternal}`;
+        // console.log(queryString);
         const response = await instance
             .get(queryString)
             .catch((err) => console.log(`api.js error \n${err}`));

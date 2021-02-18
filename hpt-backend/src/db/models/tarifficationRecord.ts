@@ -7,12 +7,12 @@ export const TarifficationRecordSchema = new Schema(
     {
         _id: String,
         dateTime: Date,
-        duration: Number,
-        subscriber: Number,
-        external: Number,
-        trunk: Number,
-        direction: Number,
-        exitCode: Number
+        duration: String,
+        subscriber: String,
+        external: String,
+        trunk: String,
+        direction: String,
+        exitCode: String
     },
     { versionKey: false }
 );

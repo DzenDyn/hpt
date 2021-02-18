@@ -53,12 +53,12 @@ client.on('data', (data) => {
     const dateTime = dataString.substring(0, 19);
     const durationHMS = dataString.substring(21, 28).split(' ').join('');
     const [dH, dM, dS] = durationHMS.split(':');
-    const duration = parseInt(dH, 10) * 60 * 60 + parseInt(dM, 10) * 60 + parseInt(dS, 10);
-    const subscriber = parseInt(dataString.substring(30, 39).split(' ').join(''), 10);
-    const external = parseInt(dataString.substring(41, 62).split(' ').join(''), 10);
-    const trunk = parseInt(dataString.substring(64, 66).split(' ').join(''), 10);
-    const direction = parseInt(dataString.substring(67, 69).split(' ').join(''), 10);
-    const exitCode = parseInt(dataString.substring(69, 71).split(' ').join(''), 10);
+    const duration = (parseInt(dH, 10) * 60 * 60 + parseInt(dM, 10) * 60 + parseInt(dS, 10)).toString();
+    const subscriber = dataString.substring(30, 39).split(' ').join('');
+    const external = dataString.substring(41, 62).split(' ').join('');
+    const trunk = dataString.substring(64, 66).split(' ').join('');
+    const direction = dataString.substring(67, 69).split(' ').join('');
+    const exitCode = dataString.substring(69, 71).split(' ').join('');
 
     if (DEBUG) console.log('Sending to backend');
     axios
