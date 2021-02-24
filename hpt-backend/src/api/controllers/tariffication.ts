@@ -6,30 +6,56 @@ import { TarifficationRecordSchema } from '../../db/models/tarifficationRecord';
 const TarifficationRecord = mongoose.model('TarifficationRecord', TarifficationRecordSchema);
 
 export function getTariffication(req: express.Request, res: express.Response): void {
-    const { subscriber, dateStart, dateEnd, external, page = 1, pageSize = 1 } = req.query;
-    const pageNumber: number = +page;
+    const {
+        column,
+        order,
+        current = 1,
+        pageSize = 1,
+        dateStart,
+        dateEnd,
+        subscriber,
+        external,
+        direction,
+        searchExactSubscriber,
+        searchExactExternal
+    } = req.query;
+    const pageNumber = +current;
     const limit: number = +pageSize;
 
-    TarifficationRecord.find({
-        ...(subscriber && { subscriber }),
+    const filter = {
+        ...(subscriber && {
+            subscriber: searchExactSubscriber ? subscriber : { $regex: subscriber, $options: 'i' }
+        }),
         ...((dateStart || dateEnd) && {
             dateTime: {
                 ...(dateStart && { $gte: dateStart }),
                 ...(dateEnd && { $lt: dateEnd })
             }
         }),
-        ...(external && { external })
-    })
+        ...(external && {
+            external: searchExactExternal ? external : { $regex: external, $options: 'i' }
+        }),
+        ...(direction && { direction })
+    };
+
+    TarifficationRecord.find(filter)
+        .sort({
+            ...(order === 'ascend' && { [String(column)]: 1 }),
+            ...(order === 'descend' && { [String(column)]: -1 })
+        })
+        .collation({ locale: 'en_US', numericOrdering: true })
         .limit(limit * 1)
         .skip((pageNumber - 1) * limit)
         .then(async (records) => {
-            const count = await TarifficationRecord.countDocuments();
+            const count = await TarifficationRecord.countDocuments(filter);
             res.json({
                 resultCode: 0,
                 records,
-                total: count,
-                totalPages: Math.ceil(count / limit),
-                currentPage: pageNumber
+                pagination: {
+                    currentPage: pageNumber,
+                    total: count,
+                    totalPages: Math.ceil(count / limit)
+                }
             });
         })
         .catch((err: Error) => {

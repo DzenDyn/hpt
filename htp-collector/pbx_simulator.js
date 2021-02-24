@@ -71,7 +71,7 @@ const server = createServer((socket) => {
             `${date} ${duration} ${subscriber()} ${external()} ${trunk()} ${direction()} ${exitCode()}\r\n`
         );
         socket.pipe(socket);
-        sleep(getRandom(1, 5) * 1000);
+        sleep(getRandom(1, 5) * getRandom(100, 1000));
     }
 });
 

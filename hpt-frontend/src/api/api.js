@@ -7,13 +7,33 @@ const instance = axios.create({
 });
 
 export const tarifficationAPI = {
-    async getTariffication(page = 1, pageSize = 10, subscriber, dateStart, dateEnd, external) {
-        let queryString = `tariffication/?page=${page}&pageSize=${pageSize}`;
-        if (subscriber) queryString += `&subscriber=${subscriber}`;
+    async getTariffication(
+        current = 1,
+        pageSize = 10,
+        column,
+        order,
+        dateStart,
+        dateEnd,
+        subscriber,
+        external,
+        direction,
+        searchExactSubscriber,
+        searchExactExternal
+    ) {
+        let queryString = `tariffication/?current=${current}&pageSize=${pageSize}`;
+        if (column) queryString += `&column=${column}`;
+        if (order) queryString += `&order=${order}`;
         if (dateStart) queryString += `&dateStart=${dateStart}`;
         if (dateEnd) queryString += `&dateEnd=${dateEnd}`;
+        if (subscriber) queryString += `&subscriber=${subscriber}`;
         if (external) queryString += `&external=${external}`;
-        const response = await instance.get(queryString).catch((err) => console.log(err));
+        if (direction) queryString += `&direction=${direction}`;
+        if (searchExactSubscriber) queryString += `&searchExactSubscriber=${searchExactSubscriber}`;
+        if (searchExactExternal) queryString += `&searchExactExternal=${searchExactExternal}`;
+        // console.log(queryString);
+        const response = await instance
+            .get(queryString)
+            .catch((err) => console.log(`api.js error \n${err}`));
         return response;
     }
 };

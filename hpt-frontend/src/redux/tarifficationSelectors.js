@@ -26,3 +26,11 @@ export const getTotalPages = (state) => {
 export const getPagionation = (state) => {
     return state.tariffication.pagination;
 };
+
+export const getFilter = (state) => {
+    return state.tariffication.filter;
+};
+
+export const getSorter = (state) => {
+    return state.tariffication.sorter;
+};

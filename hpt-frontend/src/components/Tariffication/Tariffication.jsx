@@ -2,77 +2,94 @@ import React, { useEffect } from 'react';
 import { Table } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-    getCurrentPage,
+    getFilter,
     getIsFetching,
-    getPageSize,
     getPagionation,
+    getSorter,
     getTariffication
 } from '../../redux/tarifficationSelectors';
-import { requestTariffication, setPagination } from '../../redux/tarifficationReducer';
-
-const columns = [
-    {
-        title: 'Date and Time',
-        dataIndex: 'dateTime',
-        key: 'dateTime',
-        defaultSortOrder: 'descend'
-    },
-    {
-        title: 'Subscriber',
-        dataIndex: 'subscriber',
-        key: 'subscriber'
-    },
-    {
-        title: 'Duration',
-        dataIndex: 'duration',
-        key: 'duration'
-    },
-    {
-        title: 'External',
-        dataIndex: 'external',
-        key: 'external'
-    },
-    {
-        title: 'Direction',
-        dataIndex: 'direction',
-        key: 'direction'
-    }
-];
-const PAGE_SIZE_OPTIONS = [5, 10, 20, 30, 50, 100];
+import { requestTariffication } from '../../redux/tarifficationReducer';
+import { Filter } from './Filter';
 
 export const Tariffication = () => {
     const dispatch = useDispatch();
 
-    const currentPage = useSelector(getCurrentPage);
-    const pageSize = useSelector(getPageSize);
     const isFetching = useSelector(getIsFetching);
     const tariffication = useSelector(getTariffication);
     const pagination = useSelector(getPagionation);
+    const sorter = useSelector(getSorter);
+    const filter = useSelector(getFilter);
 
     const pagiOptions = {
         ...pagination,
-        showSizeChanger: true,
-        pageSizeOptions: PAGE_SIZE_OPTIONS
+        showSizeChanger: false,
+        pageSizeOptions: [5, 10, 20, 30, 50, 100]
     };
 
     useEffect(() => {
-        dispatch(requestTariffication(currentPage, pageSize));
+        dispatch(requestTariffication(pagination, sorter, filter));
     }, []);
 
-    const handleTableChange = (pagi) => {
-        console.log('dispatch setPagi');
-        console.log(pagi);
-        dispatch(setPagination(pagi));
-        dispatch(requestTariffication(pagi.current, pagi.pageSize));
+    const columns = [
+        {
+            title: 'Date and Time',
+            dataIndex: 'dateTime',
+            key: 'dateTime',
+            defaultSortOrder: 'ascend',
+            render: (dateTime) =>
+                new Date(dateTime).toLocaleDateString(undefined, {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour12: false,
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                }),
+            sorter: true
+        },
+        {
+            title: 'Subscriber',
+            dataIndex: 'subscriber',
+            key: 'subscriber',
+            sorter: true
+        },
+        {
+            title: 'Duration',
+            dataIndex: 'duration',
+            key: 'duration',
+            sorter: true
+        },
+        {
+            title: 'External',
+            dataIndex: 'external',
+            key: 'external',
+            sorter: true
+        },
+        {
+            title: 'Direction',
+            dataIndex: 'direction',
+            key: 'direction',
+            sorter: true
+        }
+    ];
+
+    const handleTableChange = (pagi, tblFilter, sort) => {
+        if (Object.keys(tblFilter).length === 0) {
+            dispatch(requestTariffication(pagi, filter, sort));
+        } else {
+            dispatch(requestTariffication(pagi, tblFilter, sort));
+        }
     };
 
     return (
         <>
+            <Filter handleTableChange={handleTableChange} pagination={pagination} sorter={sorter} />
             <Table
                 dataSource={tariffication}
                 rowKey={(record) => record._id}
                 columns={columns}
-                key="test"
+                key="tbl"
                 pagination={pagiOptions}
                 onChange={handleTableChange}
                 loading={isFetching}

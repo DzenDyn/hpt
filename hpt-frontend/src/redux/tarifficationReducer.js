@@ -6,7 +6,9 @@ import {
     TOGGLE_IS_FETCHING,
     SET_TOTAL_PAGES,
     SET_PAGINATION,
-    SET_TOTAL
+    SET_TOTAL,
+    SET_FILTER,
+    SET_SORTER
 } from './types';
 
 const initialState = {
@@ -17,6 +19,8 @@ const initialState = {
         total: 0,
         totalPages: 0
     },
+    filter: {},
+    sorter: {},
     isFetching: false
 };
 
@@ -61,6 +65,14 @@ const handlers = {
         ...state,
         isFetching: payload
     }),
+    [SET_FILTER]: (state, { payload }) => ({
+        ...state,
+        filter: payload
+    }),
+    [SET_SORTER]: (state, { payload }) => ({
+        ...state,
+        sorter: payload
+    }),
     DEFAULT: (state) => state
 };
 
@@ -98,13 +110,47 @@ export const toggleIsFetching = (payload) => ({
     payload
 });
 
-export const requestTariffication = (currentPage, pageSize) => async (dispatch) => {
+export const setSorter = (payload) => ({
+    type: SET_SORTER,
+    payload
+});
+
+export const setFilter = (payload) => ({
+    type: SET_FILTER,
+    payload
+});
+
+export const requestTariffication = (pagination, filter, sorter) => async (dispatch) => {
+    const { current, pageSize } = pagination;
+    const { field, order } = sorter || {};
+    const {
+        dateStart,
+        dateEnd,
+        subscriber,
+        external,
+        direction,
+        searchExactSubscriber,
+        searchExactExternal
+    } = filter || {};
     dispatch(toggleIsFetching(true));
-    const response = await tarifficationAPI.getTariffication(currentPage, pageSize);
+    const response = await tarifficationAPI.getTariffication(
+        current,
+        pageSize,
+        field,
+        order,
+        dateStart,
+        dateEnd,
+        subscriber,
+        external,
+        direction,
+        searchExactSubscriber,
+        searchExactExternal
+    );
+
     if (response) {
+        dispatch(setFilter(filter));
         dispatch(setTariffication(response.data.records));
-        dispatch(setTotal(response.data.total));
-        dispatch(setTotalPages(response.data.totalPages));
+        dispatch(setPagination(response.data.pagination));
         dispatch(toggleIsFetching(false));
     }
 };
