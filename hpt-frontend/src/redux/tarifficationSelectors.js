@@ -28,9 +28,9 @@ export const getPagionation = (state) => {
 };
 
 export const getFilter = (state) => {
-    return state.filter;
+    return state.tariffication.filter;
 };
 
 export const getSorter = (state) => {
-    return state.sorter;
+    return state.tariffication.sorter;
 };

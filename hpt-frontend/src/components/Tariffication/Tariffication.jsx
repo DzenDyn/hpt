@@ -2,12 +2,13 @@ import React, { useEffect } from 'react';
 import { Table } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+    getFilter,
     getIsFetching,
     getPagionation,
     getSorter,
     getTariffication
 } from '../../redux/tarifficationSelectors';
-import { requestTariffication, setPagination, setSorter } from '../../redux/tarifficationReducer';
+import { requestTariffication } from '../../redux/tarifficationReducer';
 import { Filter } from './Filter';
 
 export const Tariffication = () => {
@@ -17,6 +18,7 @@ export const Tariffication = () => {
     const tariffication = useSelector(getTariffication);
     const pagination = useSelector(getPagionation);
     const sorter = useSelector(getSorter);
+    const filter = useSelector(getFilter);
 
     const pagiOptions = {
         ...pagination,
@@ -25,7 +27,7 @@ export const Tariffication = () => {
     };
 
     useEffect(() => {
-        dispatch(requestTariffication(pagination, undefined, undefined));
+        dispatch(requestTariffication(pagination, sorter, filter));
     }, []);
 
     const columns = [
@@ -72,10 +74,12 @@ export const Tariffication = () => {
         }
     ];
 
-    const handleTableChange = (pagi, filter, sort) => {
-        dispatch(setSorter(sort));
-        dispatch(setPagination(pagi));
-        dispatch(requestTariffication(pagi, filter, sort));
+    const handleTableChange = (pagi, tblFilter, sort) => {
+        if (Object.keys(tblFilter).length === 0) {
+            dispatch(requestTariffication(pagi, filter, sort));
+        } else {
+            dispatch(requestTariffication(pagi, tblFilter, sort));
+        }
     };
 
     return (
@@ -85,7 +89,7 @@ export const Tariffication = () => {
                 dataSource={tariffication}
                 rowKey={(record) => record._id}
                 columns={columns}
-                key="test"
+                key="tbl"
                 pagination={pagiOptions}
                 onChange={handleTableChange}
                 loading={isFetching}

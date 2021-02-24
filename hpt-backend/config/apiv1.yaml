@@ -96,9 +96,10 @@ paths:
           required: false
           in: query
           description: 'Filter by call direction. 0 - incoming, 1 - outgoing '
+          allowEmptyValue: true
           schema:
-            type: number
-            example: 0
+            type: string
+            example: 0            
       responses:
         '200':
           description: OK

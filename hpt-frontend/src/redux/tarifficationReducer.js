@@ -132,10 +132,6 @@ export const requestTariffication = (pagination, filter, sorter) => async (dispa
         searchExactSubscriber,
         searchExactExternal
     } = filter || {};
-
-    // console.log(filter);
-    // console.log(`SES = ${searchExactSubscriber}`);
-
     dispatch(toggleIsFetching(true));
     const response = await tarifficationAPI.getTariffication(
         current,
@@ -152,6 +148,7 @@ export const requestTariffication = (pagination, filter, sorter) => async (dispa
     );
 
     if (response) {
+        dispatch(setFilter(filter));
         dispatch(setTariffication(response.data.records));
         dispatch(setPagination(response.data.pagination));
         dispatch(toggleIsFetching(false));

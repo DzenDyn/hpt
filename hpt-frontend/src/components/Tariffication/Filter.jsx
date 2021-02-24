@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { DatePicker, Collapse, Space, Input, Button, Checkbox, Switch } from 'antd';
+import { useDispatch } from 'react-redux';
 import { setFilter } from '../../redux/tarifficationReducer';
-// import { getFilter } from '../../redux/tarifficationSelectors';
 
 const { Panel } = Collapse;
 
 export const Filter = (props) => {
     const dispatch = useDispatch();
-
     const [incoming, setIncoming] = useState(false);
     const [outgoing, setoutGoing] = useState(false);
     const [searchExactSubscriber, setSearchExactSubscriber] = useState(false);
@@ -22,7 +20,8 @@ export const Filter = (props) => {
         let direction;
         if (incoming) direction = '0';
         if (outgoing) direction = '1';
-        if (incoming && outgoing) direction = undefined;
+        if (incoming && outgoing) direction = ' ';
+        if (!incoming && !outgoing) direction = ' ';
 
         const filter = {
             ...(dateStart && { dateStart }),

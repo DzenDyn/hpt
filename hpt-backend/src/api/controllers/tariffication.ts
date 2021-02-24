@@ -6,23 +6,6 @@ import { TarifficationRecordSchema } from '../../db/models/tarifficationRecord';
 const TarifficationRecord = mongoose.model('TarifficationRecord', TarifficationRecordSchema);
 
 export function getTariffication(req: express.Request, res: express.Response): void {
-    /* TODO: realize filters
-
-    old method:
-    {
-        ...(subscriber && { subscriber }),
-        ...((dateStart || dateEnd) && {
-            dateTime: {
-                ...(dateStart && { $gte: dateStart }),
-                ...(dateEnd && { $lt: dateEnd })
-            }
-        }),
-        ...(external && { external })
-    }
-    */
-    // console.log('Query:');
-    // console.log(req.query);
-
     const {
         column,
         order,
@@ -38,8 +21,6 @@ export function getTariffication(req: express.Request, res: express.Response): v
     } = req.query;
     const pageNumber = +current;
     const limit: number = +pageSize;
-
-    // ...(subscriber && { subscriber: { $regex: subscriber, $options: 'i' } }),
 
     const filter = {
         ...(subscriber && {
@@ -62,6 +43,7 @@ export function getTariffication(req: express.Request, res: express.Response): v
             ...(order === 'ascend' && { [String(column)]: 1 }),
             ...(order === 'descend' && { [String(column)]: -1 })
         })
+        .collation({ locale: 'en_US', numericOrdering: true })
         .limit(limit * 1)
         .skip((pageNumber - 1) * limit)
         .then(async (records) => {
