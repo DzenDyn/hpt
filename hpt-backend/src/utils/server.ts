@@ -21,7 +21,7 @@ export async function createServer(): Promise<Express> {
     console.info(apiSummary);
 
     const server = express();
-    // here we can intialize body/cookies parsers, connect logger, for example morgan
+
     server.use(bodyParser.json());
 
     const validatorOptions = {

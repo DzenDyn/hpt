@@ -13,8 +13,10 @@ db.connect()
             })
             .catch((err: Error) => {
                 console.error(`Error: ${err.message}`);
+                db.disconnect();
             });
     })
     .catch((err: Error) => {
         console.error(err.message);
+        db.disconnect();
     });
