@@ -1,11 +1,10 @@
-import * as express from 'express';
 import * as mongoose from 'mongoose';
 import * as uuid from 'uuid';
 import { TarifficationRecordSchema } from '../../db/models/tarifficationRecord';
 
 const TarifficationRecord = mongoose.model('TarifficationRecord', TarifficationRecordSchema);
 
-export function getTariffication(req: express.Request, res: express.Response): void {
+export function getTariffication(req, res) {
     const {
         column,
         order,
@@ -20,7 +19,7 @@ export function getTariffication(req: express.Request, res: express.Response): v
         searchExactExternal
     } = req.query;
     const pageNumber = +current;
-    const limit: number = +pageSize;
+    const limit = +pageSize;
 
     const filter = {
         ...(subscriber && {
@@ -58,7 +57,7 @@ export function getTariffication(req: express.Request, res: express.Response): v
                 }
             });
         })
-        .catch((err: Error) => {
+        .catch((err) => {
             res.json({
                 resultCode: 1,
                 message: err.message
@@ -66,9 +65,7 @@ export function getTariffication(req: express.Request, res: express.Response): v
         });
 }
 
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-export function createTariffication(req: express.Request, res: express.Response): void {
+export function createTariffication(req, res) {
     const newRecord = new TarifficationRecord(req.body);
     newRecord._id = String(uuid.v4());
     newRecord
@@ -79,7 +76,7 @@ export function createTariffication(req: express.Request, res: express.Response)
                 id: String(record._id)
             });
         })
-        .catch((err: Error) => {
+        .catch((err) => {
             res.json({
                 resultCode: 1,
                 message: err.message
@@ -87,7 +84,7 @@ export function createTariffication(req: express.Request, res: express.Response)
         });
 }
 
-export function getSingleTariffication(req: express.Request, res: express.Response): void {
+export function getSingleTariffication(req, res) {
     TarifficationRecord.find({ _id: req.params.id })
         .then((record) => {
             res.json({
@@ -95,7 +92,7 @@ export function getSingleTariffication(req: express.Request, res: express.Respon
                 tariffication: record
             });
         })
-        .catch((err: Error) => {
+        .catch((err) => {
             res.json({
                 resultCode: 1,
                 message: err.message
@@ -103,7 +100,7 @@ export function getSingleTariffication(req: express.Request, res: express.Respon
         });
 }
 
-export function deleteTariffication(req: express.Request, res: express.Response): void {
+export function deleteTariffication(req, res) {
     TarifficationRecord.deleteOne({ _id: req.params.id })
         .then((result) => {
             if (result.n === 0) {
@@ -116,7 +113,7 @@ export function deleteTariffication(req: express.Request, res: express.Response)
                 resultCode: 0
             });
         })
-        .catch((err: Error) => {
+        .catch((err) => {
             res.json({
                 resultCode: 1,
                 message: err.message

@@ -1,15 +1,14 @@
 import * as dotenv from 'dotenv';
-import Mongoose = require('mongoose');
+import Mongoose from 'mongoose';
 
 dotenv.config();
-let db: Mongoose.Connection;
+let db;
 
-export const connect = async (): Promise<void> => {
+export const connect = async () => {
     const uri = 'mongodb://localhost:27017/hpt?authSource=dbWithUserCredentials';
     if (db) {
         return;
     }
-
     await Mongoose.connect(uri, {
         authSource: 'hpt',
         user: process.env.DB_USER,
@@ -31,7 +30,7 @@ export const connect = async (): Promise<void> => {
     });
 };
 
-export const disconnect = (): void => {
+export const disconnect = () => {
     if (!db) return;
     Mongoose.disconnect().catch((err) => console.log(err));
 };

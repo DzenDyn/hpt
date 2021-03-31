@@ -221,10 +221,9 @@ components:
           - subscriber
           - external
           - direction
+        additionalProperties: false
       TarifficationResponse:
         $ref: '#/components/schemas/Tariffication'
-        additionalProperties: false
-
   responses:
     'TarifficationResponse':
       description: Returns resultCoude = 0, data array of Tariffication objects and total records count, or not resultCode!=0 with error message.
