@@ -7,19 +7,10 @@
     "extends": [
         "airbnb-base",
         "prettier",
-        "eslint:recommended",
-        "plugin:@typescript-eslint/eslint-recommended",
-        "plugin:@typescript-eslint/recommended",
-        "plugin:@typescript-eslint/recommended-requiring-type-checking"
+        "eslint:recommended"
     ],
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-		// Движку нужен проект TS для правил с типами
-		"project": "./hpt-backend/tsconfig.json"
-    },
     "plugins": [
-        "prettier",
-        "@typescript-eslint"
+        "prettier"
     ],
     "rules": {
         "no-console": 0,
@@ -33,6 +24,7 @@
         "no-param-reassign": ["error", { "props": false }],
         "no-case-declarations": 0,
         "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
-        "space-infix-ops": ["error", { "int32Hint": false }]
+        "space-infix-ops": ["error", { "int32Hint": false }],
+        "no-unused-vars": ["error", { "argsIgnorePattern": "next" }]
     }
 }

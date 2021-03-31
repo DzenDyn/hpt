@@ -1,0 +1,251 @@
+openapi: 3.0.3
+info:
+  title: HiPath Tariffication
+  description: Back end API for HiPath Tariffication
+  version: 1.0.0
+  license:
+    name: MIT License
+    url: https://opensource.org/licenses/MIT
+servers:
+  - url: '/v1'
+    description: Main api server v1
+
+tags:
+  - name: Tariffication
+    description: Tariffication APIs
+
+paths:
+  /tariffication:
+    get:
+      description: 'Returns tariffication objects, total records count, total pages count and current page'
+      tags:
+        - Tariffication 
+      operationId: getTariffication
+      parameters:
+        - name: current
+          required: false 
+          in: query
+          description: 'Current page'
+          schema:
+            type: number
+          example: 1
+        - name: pageSize
+          required: false 
+          in: query
+          description: 'Page size'
+          schema:
+            type: number
+          example: 10
+        - name: column
+          required: false 
+          in: query
+          description: 'Sort by column'
+          schema:
+            type: string
+          example: Name
+        - name: order
+          required: false 
+          in: query
+          description: 'Order'
+          examples:
+            Ascending:
+              value: ascend
+            Descending:
+              value: descend
+          schema:
+            type: string
+        - name: dateStart
+          required: false
+          in: query
+          description: 'Filter items starting from date'
+          schema:
+            type: string
+        - name: dateEnd
+          required: false
+          in: query
+          description: 'Filter items up to date'
+          schema:
+            type: string
+        - name: subscriber
+          required: false
+          in: query
+          description: 'Filter items by subscriber'
+          schema:
+            type: number
+        - name: searchExactSubscriber
+          required: false
+          in: query
+          description: 'Search exact value of subscriber'
+          schema:
+            type: boolean
+          example: false
+        - name: external
+          required: false
+          in: query
+          description: 'Filter items by external subscriber'
+          schema:
+            type: string
+        - name: searchExactExternal
+          required: false
+          in: query
+          description: 'Search exact value of external subscriber'
+          schema:
+            type: boolean
+          example: false
+        - name: direction
+          required: false
+          in: query
+          description: 'Filter by call direction. 0 - incoming, 1 - outgoing '
+          allowEmptyValue: true
+          schema:
+            type: string
+            example: 0            
+      responses:
+        '200':
+          description: OK
+          $ref: '#/components/responses/TarifficationResponse'
+    post:
+      description: Creates new tariffication
+      tags:
+        - Tariffication
+      operationId: createTariffication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Tariffication'
+      responses:
+        '201':
+          description: Returns resultCode 0 and id of created tariffication, or resultCode not null with error message.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  resultCode:
+                    type: integer
+                  id:
+                    type: string
+                  message:
+                    type: string
+                required:
+                  - resultCode
+  /tariffication/{id}:
+    get:
+      description: Returns single tariffication by unique id
+      tags:
+        - Tariffication
+      operationId: getSingleTariffication
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Returns resultCode 0 and single tariffication with id specified, or resultCode and error message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  resultCode:
+                    type: integer
+                  message:
+                    type: string                    
+                  tariffication:
+                    $ref: '#/components/schemas/Tariffication'
+                required:
+                  - resultCode
+    delete:
+      description: Deletes tariffication with id specified
+      tags:
+        - Tariffication
+      operationId: deleteTariffication
+      parameters:
+        - name: id
+          required: true
+          in: path
+          description: 'Tariffication string id'
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Returns resultCode 0, or not 0 resultCode with error message.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  resultCode:
+                    type: integer
+                  message:
+                    type: string
+                required:
+                  - resultCode
+
+components:
+  schemas:
+      Tariffication:
+        type: object
+        properties:
+          id:
+            type: string
+            description: An Unique identificator
+          dateTime:
+            type: string
+            description: 'Date and time. Format: YYYY-MM-DD HH:mm:ss, wich auto converts to UTC. Example: 2020-11-22 12:00:00 will be 2020-11-22 09:00:00'
+          duration:
+            type: string
+            description: 'Call duration in seconds'
+          subscriber:
+            type: string
+            description: 'Subscriber number'
+          external:
+            type: string
+            description: 'External number'
+          trunk:
+            type: string
+            description: 'Trunk number'
+          direction:
+            type: string
+            description: 'Call direction'
+          exitCode:
+            type: string
+            description: 'Call exit code'            
+        required:
+          - dateTime
+          - duration
+          - subscriber
+          - external
+          - direction
+        additionalProperties: false
+      TarifficationResponse:
+        $ref: '#/components/schemas/Tariffication'
+  responses:
+    'TarifficationResponse':
+      description: Returns resultCoude = 0, data array of Tariffication objects and total records count, or not resultCode!=0 with error message.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              resultCode:
+                type: integer
+              message:
+                    type: string
+              records:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/TarifficationResponse'
+              pagination:
+                  type: object
+                  properties:
+                    currentPage:
+                      type: number
+                    total:
+                      type: number
+                    totalPages:
+                      type: number

@@ -2,7 +2,6 @@ import * as mongoose from 'mongoose';
 
 const { Schema } = mongoose;
 
-/* eslint-disable  @typescript-eslint/no-unsafe-assignment */
 export const TarifficationRecordSchema = new Schema(
     {
         _id: String,
