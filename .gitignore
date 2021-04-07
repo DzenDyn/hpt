@@ -22,6 +22,8 @@ pids
 # production
 *build
 *build/Release
+**bin
+**bin/**
 
 # misc
 *.DS_Store
