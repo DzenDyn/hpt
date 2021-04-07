@@ -15,5 +15,4 @@ server.listen(80, () => {
         'Listening on http://localhost\nOpen http://localhost/v1/api-docs for documentation'
     );
 });
-
 // console.log(`App: ${server}`);

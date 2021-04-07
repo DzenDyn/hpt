@@ -4,7 +4,8 @@ const { Schema } = mongoose;
 
 export const TarifficationRecordSchema = new Schema(
     {
-        _id: String,
+        // _id: String,
+        pbx: String,
         dateTime: Date,
         duration: String,
         subscriber: String,

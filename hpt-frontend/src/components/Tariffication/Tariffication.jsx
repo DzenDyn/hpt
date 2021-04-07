@@ -51,25 +51,25 @@ export const Tariffication = () => {
         {
             title: 'Subscriber',
             dataIndex: 'subscriber',
-            key: 'subscriber',
+            // key: 'subscriber',
             sorter: true
         },
         {
             title: 'Duration',
             dataIndex: 'duration',
-            key: 'duration',
+            // key: 'duration',
             sorter: true
         },
         {
             title: 'External',
             dataIndex: 'external',
-            key: 'external',
+            // key: 'external',
             sorter: true
         },
         {
             title: 'Direction',
             dataIndex: 'direction',
-            key: 'direction',
+            // key: 'direction',
             sorter: true
         }
     ];
@@ -87,9 +87,8 @@ export const Tariffication = () => {
             <Filter handleTableChange={handleTableChange} pagination={pagination} sorter={sorter} />
             <Table
                 dataSource={tariffication}
-                rowKey={(record) => record._id}
+                rowKey="id"
                 columns={columns}
-                key="tbl"
                 pagination={pagiOptions}
                 onChange={handleTableChange}
                 loading={isFetching}

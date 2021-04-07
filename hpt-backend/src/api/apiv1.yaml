@@ -196,7 +196,7 @@ components:
             description: An Unique identificator
           dateTime:
             type: string
-            description: 'Date and time. Format: YYYY-MM-DD HH:mm:ss, wich auto converts to UTC. Example: 2020-11-22 12:00:00 will be 2020-11-22 09:00:00'
+            description: 'Date and time. Format: YYYY-MM-DD HH:mm:ss, which auto converts to UTC. Example: 2020-11-22 12:00:00 will be 2020-11-22 09:00:00'
           duration:
             type: string
             description: 'Call duration in seconds'

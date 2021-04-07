@@ -20,8 +20,8 @@ export const Filter = (props) => {
         let direction;
         if (incoming) direction = '0';
         if (outgoing) direction = '1';
-        if (incoming && outgoing) direction = ' ';
-        if (!incoming && !outgoing) direction = ' ';
+        if (incoming && outgoing) direction = '';
+        if (!incoming && !outgoing) direction = '';
 
         const filter = {
             ...(dateStart && { dateStart }),
@@ -33,6 +33,7 @@ export const Filter = (props) => {
             ...(searchExactExternal && { searchExactExternal })
         };
         dispatch(setFilter(filter));
+        console.log(filter);
         props.handleTableChange(props.pagination, filter, props.sorter);
     };
     const subscriberExactSwitch = (
@@ -59,19 +60,28 @@ export const Filter = (props) => {
                         placeholder="Select from date"
                         onChange={(dates, dateString) => setDateStart(dateString)}
                         allowClear
+                        key="fromDate"
                     />
                     <DatePicker
                         placeholder="Select till date"
                         onChange={(dates, dateString) => setdateEnd(dateString)}
                         allowClear
+                        key="tillDate"
                     />
 
                     <Input
                         placeholder="Subscriber"
                         suffix={subscriberExactSwitch}
                         value={subscriber}
-                        onChange={(e) => setSubscriber(e.target.value, 10)}
+                        onChange={(e) => {
+                            if (!e.target.value) {
+                                setSubscriber('', 10);
+                            } else {
+                                setSubscriber(e.target.value, 10);
+                            }
+                        }}
                         allowClear
+                        key="subscriber"
                     />
 
                     <Input
@@ -80,18 +90,21 @@ export const Filter = (props) => {
                         value={external}
                         onChange={(e) => setExternal(e.target.value, 10)}
                         allowClear
+                        key="external"
                     />
 
                     <Space direction="vertical">
                         <Checkbox
                             onChange={(e) => setIncoming(e.target.checked)}
                             checked={incoming}
+                            key="incoming"
                         >
-                            Icoming
+                            Incoming
                         </Checkbox>
                         <Checkbox
                             onChange={(e) => setoutGoing(e.target.checked)}
                             checked={outgoing}
+                            key="outgoing"
                         >
                             Outgoing
                         </Checkbox>

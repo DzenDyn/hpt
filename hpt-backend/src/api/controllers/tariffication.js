@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
 import * as uuid from 'uuid';
-import { TarifficationRecordSchema } from '../../db/models/tarifficationRecord';
+import { TarifficationRecordSchema } from '../../db/models/TarifficationRecord';
 
 const TarifficationRecord = mongoose.model('TarifficationRecord', TarifficationRecordSchema);
 
@@ -37,13 +37,15 @@ export function getTariffication(req, res) {
         ...(direction && { direction })
     };
 
+    console.log(filter);
+
     TarifficationRecord.find(filter)
         .sort({
             ...(order === 'ascend' && { [String(column)]: 1 }),
             ...(order === 'descend' && { [String(column)]: -1 })
         })
         .collation({ locale: 'en_US', numericOrdering: true })
-        .limit(limit * 1)
+        .limit(limit)
         .skip((pageNumber - 1) * limit)
         .then(async (records) => {
             const count = await TarifficationRecord.countDocuments(filter);
